@@ -1,0 +1,118 @@
+body {
+  background: #f3f1f2;
+  font-family: sans-serif;
+}
+
+.container {
+  padding: 1rem;
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.dataSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.textInput {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  /* This width is to match the description text editor */
+  width: 95%;
+  border: none;
+  box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"] {
+  height: 2.5rem;
+  padding: 0 1rem;
+}
+
+textarea {
+  font-family: inherit;
+  padding: 1rem 1rem;
+  resize: none;
+}
+
+.textInput:focus,
+.file input:focus ~ .file-custom {
+  box-shadow: 0 0 0 1.5px teal;
+  outline: none;
+}
+
+.submitButton {
+  font-size: 1rem;
+  width: fit-content;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  border: none;
+  background: black;
+  color: white;
+}
+
+.submitButton[type="submit"] {
+  margin-top: 2rem;
+}
+
+.submitButton:hover {
+  cursor: pointer;
+}
+
+.file {
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.file input {
+  min-width: 14rem;
+  margin: 0;
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.file-custom {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  height: 1.5rem;
+  padding: 0.5rem 1rem;
+  line-height: 1.5;
+  color: #555;
+  background-color: #fff;
+  border: 0.075rem solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.file-custom:after {
+  content: attr(placeholder);
+}
+.file-custom:before {
+  position: absolute;
+  top: -0.075rem;
+  right: -0.075rem;
+  bottom: -0.075rem;
+  z-index: 6;
+  display: block;
+  content: "Browse";
+  height: 1.5rem;
+  padding: 0.5rem 1rem;
+  line-height: 1.5;
+  color: #555;
+  background-color: #eee;
+  border: 0.075rem solid #ddd;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
