@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import "../assets/stylesheets/AddProduct.css";
 import TextEditor from "./TextEditor";
@@ -7,7 +8,7 @@ export default function AddProduct() {
     title: "",
     price: 0,
     description: "",
-    coverImage: undefined,
+    // coverImage: undefined,
     seoTitle: "",
     seoDescription: ""
   });
@@ -23,6 +24,14 @@ export default function AddProduct() {
     e.preventDefault();
 
     console.log(product);
+
+    /* Save product info to the database */
+    axios
+      .post("https://ccch1.sse.codesandbox.io/products/add", product)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      });
   }
 
   return (
@@ -59,9 +68,9 @@ export default function AddProduct() {
         <label className="file">
           <input
             type="file"
-            onChange={(e) =>
-              setProduct({ ...product, coverImage: e.target.files[0] })
-            }
+            // onChange={(e) =>
+            //   setProduct({ ...product, coverImage: e.target.files[0] })
+            // }
           />
           <span
             className="file-custom"
