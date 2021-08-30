@@ -3,14 +3,6 @@ import "../assets/stylesheets/AddProduct.css";
 import TextEditor from "./TextEditor";
 
 export default function AddProduct() {
-  /* Value to be used by the Editor */
-  var textEditorHtml = "";
-
-  /* Callback that updates the value */
-  function handleEditorHtmlChange(html) {
-    textEditorHtml = html;
-  }
-
   const [product, setProduct] = useState({
     title: "",
     price: 0,
@@ -19,6 +11,11 @@ export default function AddProduct() {
     seoTitle: "",
     seoDescription: ""
   });
+
+  /* Callback that updates the value */
+  function handleEditorHtmlChange(html) {
+    setProduct({ ...product, description: html });
+  }
 
   /* On submit form */
   function onAddProduct(e) {
@@ -40,13 +37,25 @@ export default function AddProduct() {
           onChange={(e) => setProduct({ ...product, title: e.target.value })}
         />
       </div>
+      <div className="dataSection">
+        <div className="header">Price</div>
+        <input
+          type="number"
+          className="textInput"
+          placeholder="Enter Price (in ₹)"
+          value={product.price === 0 ? "" : product.price}
+          onChange={(e) =>
+            setProduct({ ...product, price: parseInt(e.target.value, 10) })
+          }
+        />
+      </div>
       <div className="header">Product Description</div>
       <TextEditor
-        textEditorHtml={textEditorHtml}
+        textEditorHtml={product.description}
         handleEditorHtmlChange={handleEditorHtmlChange}
       />
       <div className="dataSection">
-        <div className="header">Attach Media</div>
+        <div className="header">Attach Cover Image</div>
         <label className="file">
           <input
             type="file"
