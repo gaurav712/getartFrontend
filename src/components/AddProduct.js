@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-import "../assets/stylesheets/AddProduct.css";
 import TextEditor from "./TextEditor";
+
+import "../assets/stylesheets/Common.css";
+import "../assets/stylesheets/AddProduct.css";
 
 export default function AddProduct() {
   const [product, setProduct] = useState({
