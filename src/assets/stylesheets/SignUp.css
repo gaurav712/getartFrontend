@@ -1,0 +1,40 @@
+.signUpContent {
+  margin: 5em auto;
+}
+
+.nameSection {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+.nameSectionElement {
+  width: 40%;
+}
+
+.emailSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.emailSectionElement {
+  margin: 1rem;
+  width: inherit;
+}
+
+.signUpButton {
+  margin: 2rem auto;
+  width: 70%;
+}
+
+@media (max-width: 600px) {
+  .nameSection {
+    flex-direction: column;
+    margin: auto 1rem;
+  }
+
+  .nameSectionElement {
+    width: inherit;
+    margin: 1rem 0;
+  }
+}

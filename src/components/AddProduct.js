@@ -96,7 +96,9 @@ export default function AddProduct() {
         <p style={{ fontSize: "0.9rem" }}>
           This product has multiple variants. Like different sizes or colours.
         </p>
-        <button className="submitButton">Add Variant Option</button>
+        <button className="submitButton" style={{ width: "fit-content" }}>
+          Add Variant Option
+        </button>
       </div>
       <div className="dataSection">
         <div className="header">SEO Meta Details</div>
