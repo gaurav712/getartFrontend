@@ -1,4 +1,6 @@
 import { useState } from "react";
+import SHA256 from "../utils/sha256";
+
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/SignUp.css";
 
@@ -13,6 +15,7 @@ export default function SignUp() {
   function signUpUser(e) {
     e.preventDefault();
 
+    setSignUpInfo({ ...signUpInfo, password: SHA256(signUpInfo.password) });
     console.log(signUpInfo);
   }
 

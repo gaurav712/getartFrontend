@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SHA256 from "../utils/sha256";
 
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/Login.css";
@@ -13,6 +14,7 @@ export default function Login() {
   function logInToAccount(e) {
     e.preventDefault();
 
+    setLoginInfo({ ...loginInfo, password: SHA256(loginInfo.password) });
     console.log(loginInfo);
   }
 
