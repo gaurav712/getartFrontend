@@ -8,7 +8,7 @@ export default function AddProduct() {
     title: "",
     price: 0,
     description: "",
-    // coverImage: undefined,
+    // coverImage: null,
     seoTitle: "",
     seoDescription: ""
   });
@@ -31,6 +31,11 @@ export default function AddProduct() {
       .then((res) => {
         console.log(res);
         console.log(res.data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response.data);
+        }
       });
   }
 
