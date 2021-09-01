@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/Home.css";
 
 import icon from "../assets/image.png";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   /* useState for product list */
@@ -17,10 +17,15 @@ export default function Home() {
       to={`/product/${productInfo._id}`}
       style={{ textDecoration: "none", color: "inherit" }}
     >
-      <div className="product">
+      <div className="product tooltip">
         <img src={icon} className="productImage" alt="" />
         <div className="productDetails">
-          <div className="name">{productInfo.title}</div>
+          <div className="name">
+            {productInfo.title.length > 17
+              ? productInfo.title.slice(0, 17) + "..."
+              : productInfo.title}
+          </div>
+          <div className="tooltiptext">{productInfo.title}</div>
           <div className="price">₹{productInfo.price}</div>
         </div>
       </div>
