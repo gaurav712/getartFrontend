@@ -1,3 +1,87 @@
+.headerBar {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+}
+
+.titleBar {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.titleText {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
 .loginButton {
   text-decoration: none;
+  width: fit-content;
+  margin-left: auto;
+}
+
+#searchBox {
+  width: 60%;
+  margin: 1rem auto;
+}
+
+.wrapper {
+  display: grid;
+  margin: 2em auto;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.product {
+  margin: 1em;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.product:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.productImage {
+  width: 100%;
+}
+
+.name,
+.price {
+  margin: 0.2rem auto;
+  width: fit-content;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 850px) {
+  .wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .product {
+    margin: 0.5em;
+  }
+  #searchBox {
+    width: 80%;
+  }
+  .name {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
