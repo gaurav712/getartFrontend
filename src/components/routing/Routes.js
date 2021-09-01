@@ -3,6 +3,7 @@ import Home from "../Home";
 import AddProduct from "../AddProduct";
 import Login from "../Login";
 import SignUp from "../SignUp";
+import ProductDetails from "../ProductDetails";
 
 export default function Routes() {
   return (
@@ -11,6 +12,11 @@ export default function Routes() {
       <Route exact path="/addproduct" component={AddProduct}></Route>
       <Route exact path="/login" component={Login}></Route>
       <Route exact path="/signup" component={SignUp}></Route>
+      <Route
+        exact
+        path="/product/:productId"
+        component={ProductDetails}
+      ></Route>
     </Switch>
   );
 }

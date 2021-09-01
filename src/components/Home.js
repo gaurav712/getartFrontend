@@ -12,19 +12,20 @@ export default function Home() {
   const [products, setProducts] = useState([]);
 
   /* Template for each product card */
-  const ProductCard = ({ onClickProduct, icon, productInfo }) => (
-    <div className="product" onClick={() => onClickProduct(productInfo._id)}>
-      <img src={icon} className="productImage" alt="" />
-      <div className="productDetails">
-        <div className="name">{productInfo.title}</div>
-        <div className="price">₹{productInfo.price}</div>
+  const ProductCard = ({ icon, productInfo }) => (
+    <Link
+      to={`/product/${productInfo._id}`}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+      <div className="product">
+        <img src={icon} className="productImage" alt="" />
+        <div className="productDetails">
+          <div className="name">{productInfo.title}</div>
+          <div className="price">₹{productInfo.price}</div>
+        </div>
       </div>
-    </div>
+    </Link>
   );
-
-  function onClickProduct(productId) {
-    console.log(`taking you to the product page for ${productId}`);
-  }
 
   useEffect(() => {
     /* Fetch 40 products by default */
@@ -60,11 +61,7 @@ export default function Home() {
       </div>
       <div className="wrapper">
         {products.map((product) => (
-          <ProductCard
-            onClickProduct={onClickProduct}
-            icon={icon}
-            productInfo={product}
-          />
+          <ProductCard icon={icon} productInfo={product} />
         ))}
       </div>
     </div>
