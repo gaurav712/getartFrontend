@@ -17,7 +17,7 @@ export default function Home() {
       to={`/product/${productInfo._id}`}
       style={{ textDecoration: "none", color: "inherit" }}
     >
-      <div className="product tooltip">
+      <div className="product">
         <img src={icon} className="productImage" alt="" />
         <div className="productDetails">
           <div className="name">
@@ -25,7 +25,6 @@ export default function Home() {
               ? productInfo.title.slice(0, 17) + "..."
               : productInfo.title}
           </div>
-          <div className="tooltiptext">{productInfo.title}</div>
           <div className="price">₹{productInfo.price}</div>
         </div>
       </div>
