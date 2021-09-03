@@ -7,7 +7,6 @@ svg {
   width: 100vw;
   max-width: none;
   padding: 0;
-  margin: -8px;
 }
 
 .topBar {
@@ -79,4 +78,41 @@ svg {
 #addToCartButton {
   background: #fff;
   color: black;
+}
+
+@media (max-width: 750px) {
+  .topBar {
+    height: 2.5em;
+  }
+
+  .productDetailsSection {
+    width: unset;
+    padding: 1em;
+    max-width: none;
+    border-radius: 0;
+    flex-direction: column;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .imageSection,
+  .descriptionSection {
+    width: inherit;
+    margin: auto;
+    width: 95%;
+  }
+
+  .descriptionSection {
+    margin-top: 1em;
+  }
+
+  .checkoutControlsSection {
+    flex-direction: column;
+  }
+
+  #addToCartButton,
+  #buyNowButton {
+    width: 100%;
+    margin: 0.75em auto;
+  }
 }

@@ -51,7 +51,7 @@ export default function ProductDetails() {
   });
 
   return (
-    <div className="container productArea">
+    <div className="productArea">
       <div className="topBar">
         <Link to={"/"} id="homeLink" style={{ display: "none" }} />
         <label htmlFor="homeLink">
