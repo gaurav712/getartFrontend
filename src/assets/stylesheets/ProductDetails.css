@@ -21,12 +21,9 @@ svg {
   display: none;
 }
 
-#toggleCartPanel {
+#toggleCartPanel,
+#homeLink {
   display: none;
-}
-
-#toggleCartPanel:checked ~ .cartPanel {
-  display: block;
 }
 
 .productDetailsSection {
@@ -78,6 +75,11 @@ svg {
 #addToCartButton {
   background: #fff;
   color: black;
+}
+
+label[for="toggleCartPanel"],
+label[for="homeLink"] {
+  cursor: pointer;
 }
 
 @media (max-width: 750px) {

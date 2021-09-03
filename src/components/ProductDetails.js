@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import "../assets/stylesheets/ProductDetails.css";
 import image from "../assets/image.png";
@@ -8,6 +8,7 @@ import image from "../assets/image.png";
 export default function ProductDetails() {
   /* Set productId */
   var productId = useLocation().pathname.replace(/\/*.*\//, "");
+  var history = useHistory();
 
   /* useState for product details */
   const [productDetails, setProductDetails] = useState({
@@ -17,6 +18,9 @@ export default function ProductDetails() {
     seoTitle: "",
     seoDescription: ""
   });
+
+  /* TO get cartPanel instance */
+  const cartPanelRef = useRef();
 
   /*
    * It retries after a fixed interval
@@ -50,10 +54,18 @@ export default function ProductDetails() {
     }
   });
 
+  function toggleCartPanel() {
+    const cartPanel = cartPanelRef.current;
+    cartPanel.style.display =
+      getComputedStyle(cartPanel).getPropertyValue("display") === "none"
+        ? "block"
+        : "none";
+  }
+
   return (
     <div className="productArea">
       <div className="topBar">
-        <Link to={"/"} id="homeLink" style={{ display: "none" }} />
+        <button id="homeLink" onClick={() => history.goBack()}></button>
         <label htmlFor="homeLink">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +78,7 @@ export default function ProductDetails() {
             <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z" />
           </svg>
         </label>
-        <input type="checkbox" id="toggleCartPanel" />
+        <button id="toggleCartPanel" onClick={toggleCartPanel}></button>
         <label htmlFor="toggleCartPanel">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +92,9 @@ export default function ProductDetails() {
           </svg>
         </label>
       </div>
-      <div className="cartPanel">Some Text</div>
+      <div className="cartPanel" ref={cartPanelRef}>
+        Some Text
+      </div>
       <div className="productDetailsSection">
         <div className="imageSection">
           <img src={image} className="productImage" alt="" />
