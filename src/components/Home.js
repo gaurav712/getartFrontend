@@ -93,6 +93,7 @@ export default function Home() {
     } else if (loginStatus === "Logout") {
       console.log("logging out");
       localStorage.removeItem("token");
+      history.push("/logout");
     }
   }
 
