@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
 
+import Cart from "./Cart";
+
 import "../assets/stylesheets/ProductDetails.css";
-import image from "../assets/image.png";
 
 export default function ProductDetails() {
   /* Set productId */
@@ -12,12 +13,14 @@ export default function ProductDetails() {
 
   /* useState for authorization status */
   const [authorized, setAuthorized] = useState(false);
+  const [userId, setUserId] = useState("");
 
   /* useState for product details */
   const [productDetails, setProductDetails] = useState({
     title: "",
     price: 0,
     description: "",
+    coverImage: "",
     seoTitle: "",
     seoDescription: ""
   });
@@ -64,6 +67,8 @@ export default function ProductDetails() {
         })
         .then((res) => {
           setAuthorized(true);
+          console.log(res.data);
+          setUserId(res.data._id);
         })
         .catch((err) => {
           console.log(err);
@@ -82,10 +87,7 @@ export default function ProductDetails() {
   function toggleCartPanel() {
     if (authorized) {
       const cartPanel = cartPanelRef.current;
-      cartPanel.style.display =
-        getComputedStyle(cartPanel).getPropertyValue("display") === "none"
-          ? "block"
-          : "none";
+      cartPanel.style.display = "block";
     } else {
       history.push("/login");
       alert("You need to login first!");
@@ -94,7 +96,31 @@ export default function ProductDetails() {
 
   function addProductToCart() {
     if (authorized) {
-      console.log("added to cart");
+      var token = "";
+      token = localStorage.getItem("token");
+
+      if (token) {
+        const cartEntry = {
+          user: userId,
+          products: [
+            `${productDetails.title}||${productDetails.price}||${productDetails.coverImage}`
+          ]
+        };
+
+        axios
+          .post(`${process.env.BACKEND_URI}/cart/add`, cartEntry, {
+            headers: {
+              "X-Auth-Token": token
+            }
+          })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("failed to add!");
+          });
+      }
     } else {
       history.push("/login");
       alert("You need to login first!");
@@ -102,7 +128,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="productArea">
+    <>
       <div className="topBar">
         <button id="homeLink" onClick={() => history.push("/")}></button>
         <label htmlFor="homeLink">
@@ -131,41 +157,47 @@ export default function ProductDetails() {
           </svg>
         </label>
       </div>
-      <div className="cartPanel" ref={cartPanelRef}>
-        Some Text
+      <div id="cartPanelDiv" className="cartPanel" ref={cartPanelRef}>
+        <Cart />
       </div>
-      <div className="productDetailsSection">
-        <div className="imageSection">
-          <img src={image} className="productImage" alt="" />
-        </div>
-        <div className="descriptionSection">
-          <div className="infoSection">
-            <div className="productTitle">{productDetails.title}</div>
-            <div className="productPrice">₹ {productDetails.price}</div>
-            <div
-              className="productDescription"
-              dangerouslySetInnerHTML={{ __html: productDetails.description }}
-            ></div>
+      <div className="productArea">
+        <div className="productDetailsSection">
+          <div className="imageSection">
+            <img
+              src={productDetails.coverImage}
+              className="productImage"
+              alt=""
+            />
           </div>
-          <div className="productVariantsSection"></div>
-          <div className="checkoutControlsSection">
-            <button
-              className="loginButton"
-              id="addToCartButton"
-              onClick={addProductToCart}
-            >
-              ADD TO CART
-            </button>
-            <button
-              className="loginButton"
-              id="buyNowButton"
-              onClick={addProductToCart}
-            >
-              BUY NOW
-            </button>
+          <div className="descriptionSection">
+            <div className="infoSection">
+              <div className="productTitle">{productDetails.title}</div>
+              <div className="productPrice">₹ {productDetails.price}</div>
+              <div
+                className="productDescription"
+                dangerouslySetInnerHTML={{ __html: productDetails.description }}
+              ></div>
+            </div>
+            <div className="productVariantsSection"></div>
+            <div className="checkoutControlsSection">
+              <button
+                className="loginButton"
+                id="addToCartButton"
+                onClick={addProductToCart}
+              >
+                ADD TO CART
+              </button>
+              <button
+                className="loginButton"
+                id="buyNowButton"
+                onClick={addProductToCart}
+              >
+                BUY NOW
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

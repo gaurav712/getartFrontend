@@ -3,10 +3,7 @@ svg {
 }
 
 .productArea {
-  height: 100vh;
-  width: 100vw;
-  max-width: none;
-  padding: 0;
+  padding-top: 9em;
 }
 
 .topBar {
@@ -15,16 +12,19 @@ svg {
   background-color: #333;
   height: 3em;
   padding: 1em;
+  position: fixed;
+  width: calc(100% - 2em);
 }
 
 .cartPanel {
   display: none;
   z-index: 1;
   position: fixed;
-  height: 100%;
-  width: 40%;
-  left: 70%;
-  background: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 35%;
+  left: 65%;
+  color: white;
+  background: rgba(33, 33, 33, 0.95);
   transition: all 0.5s;
 }
 
@@ -36,7 +36,7 @@ svg {
 .productDetailsSection {
   width: 90%;
   max-width: 800px;
-  margin: 3em auto;
+  margin: 0 auto;
   padding: 1em;
   background: #ddd;
   border-radius: 1em;
@@ -99,6 +99,10 @@ label[for="homeLink"] {
     width: 100vw;
   }
 
+  .productArea {
+    padding-top: 3em;
+  }
+
   .productDetailsSection {
     width: unset;
     padding: 1em;
@@ -128,5 +132,12 @@ label[for="homeLink"] {
   #buyNowButton {
     width: 100%;
     margin: 0.75em auto;
+  }
+}
+
+@media (min-width: 1000px) {
+  .cartPanel {
+    width: 30%;
+    left: 70%;
   }
 }

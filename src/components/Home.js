@@ -5,8 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/Home.css";
 
-import icon from "../assets/image.png";
-
 export default function Home() {
   const history = useHistory();
 
@@ -23,13 +21,13 @@ export default function Home() {
   const [loginStatus, setLoginStatus] = useState("Log In");
 
   /* Template for each product card */
-  const ProductCard = ({ icon, productInfo }) => (
+  const ProductCard = ({ productInfo }) => (
     <Link
       to={`/product/${productInfo._id}`}
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <div className="product">
-        <img src={icon} className="productImage" alt="" />
+        <img src={productInfo.coverImage} className="productImage" alt="" />
         <div className="productDetails">
           <div className="name">
             {productInfo.title.length > 17
@@ -47,8 +45,6 @@ export default function Home() {
     axios
       .get(`${process.env.BACKEND_URI}/products/40`)
       .then((res) => {
-        console.log(res.data);
-
         setProducts(res.data);
       })
       .catch((err) => {
@@ -73,7 +69,6 @@ export default function Home() {
           loginButtonRef.current.style.display = "block";
 
           /* If the user is admin enable the addproduct button */
-          console.log(res.data);
           if (res.data.email === "admin@getart") {
             addProductButtonRef.current.style.display = "block";
           }
@@ -95,6 +90,18 @@ export default function Home() {
       localStorage.removeItem("token");
       history.push("/logout");
     }
+  }
+
+  function searchForProducts(query) {
+    axios
+      .get(`${process.env.BACKEND_URI}/products/search/${query}`)
+      .then((res) => {
+        console.log(res.data);
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -126,11 +133,16 @@ export default function Home() {
           className="textInput"
           id="searchBox"
           placeholder="Search for products"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              searchForProducts(e.target.value);
+            }
+          }}
         />
       </div>
       <div className="wrapper">
         {products.map((product) => (
-          <ProductCard icon={icon} productInfo={product} />
+          <ProductCard productInfo={product} />
         ))}
       </div>
     </div>

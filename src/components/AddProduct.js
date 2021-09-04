@@ -6,11 +6,12 @@ import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/AddProduct.css";
 
 export default function AddProduct() {
+  const [imageFile, setImageFile] = useState(null);
+
   const [product, setProduct] = useState({
     title: "",
     price: 0,
     description: "",
-    // coverImage: null,
     seoTitle: "",
     seoDescription: ""
   });
@@ -20,6 +21,30 @@ export default function AddProduct() {
     setProduct({ ...product, description: html });
   }
 
+  /* Save product info to the database */
+  function saveProductToDB(imageUrl) {
+    const productInfo = {
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      coverImage: imageUrl,
+      seoTitle: product.seoTitle,
+      seoDescription: product.seoDescription
+    };
+
+    axios
+      .post(`${process.env.BACKEND_URI}/products/add`, productInfo)
+      .then((res) => {
+        console.log(res);
+        alert("Product Added!");
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response.data);
+        }
+      });
+  }
+
   /* On submit form */
   function onAddProduct(e) {
     /* Prevent default behaviour */
@@ -27,18 +52,24 @@ export default function AddProduct() {
 
     console.log(product);
 
-    /* Save product info to the database */
-    axios
-      .post(`${process.env.BACKEND_URI}/products/add`, product)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response.data);
-        }
-      });
+    /* Prepare the productImage */
+    if (imageFile && /\.(|jpe?g|png)$/i.test(imageFile.name)) {
+      var formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("upload_preset", process.env.UPLOAD_PRESET);
+
+      /* Now push the image to cloudinary */
+      axios
+        .post(process.env.CLOUDINARY_UPLOAD_URI, formData)
+        .then((res) => {
+          console.log(res);
+          // setProduct({ ...product, coverImage: res.data.url });
+          saveProductToDB(res.data.url);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   return (
@@ -75,17 +106,11 @@ export default function AddProduct() {
         <label className="file">
           <input
             type="file"
-            // onChange={(e) =>
-            //   setProduct({ ...product, coverImage: e.target.files[0] })
-            // }
+            onChange={(e) => setImageFile(e.target.files[0])}
           />
           <span
             className="file-custom"
-            placeholder={
-              product.coverImage
-                ? product.coverImage.name
-                : "Upload Cover Image"
-            }
+            placeholder={imageFile ? imageFile.name : "Upload Cover Image"}
           ></span>
         </label>
       </div>
