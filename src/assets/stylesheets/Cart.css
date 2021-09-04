@@ -1,0 +1,37 @@
+.cartPanelContainer {
+  width: 90%;
+  margin: auto;
+}
+
+.cartEntry {
+  display: flex;
+  width: inherit;
+  margin: 0.1em auto;
+  height: 8em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 1px solid black;
+  border-bottom: 1px solid white;
+}
+
+.cartPanelProductImage {
+  height: inherit;
+}
+
+.cartPanelProductDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5em 0;
+  margin: 0 1rem;
+}
+
+.cartPanelProductprice {
+  color: cyan;
+  font-size: 0.9rem;
+  margin: 0.1rem;
+}
+
+label[for="closeCartPanelButton"] {
+  cursor: pointer;
+}
