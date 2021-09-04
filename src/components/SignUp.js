@@ -1,10 +1,13 @@
+import axios from "axios";
 import { useState } from "react";
-import SHA256 from "../utils/sha256";
+import { useHistory } from "react-router-dom";
 
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/SignUp.css";
 
 export default function SignUp() {
+  const history = useHistory();
+
   const [signUpInfo, setSignUpInfo] = useState({
     firstName: "",
     lastName: "",
@@ -14,9 +17,24 @@ export default function SignUp() {
 
   function signUpUser(e) {
     e.preventDefault();
-
-    setSignUpInfo({ ...signUpInfo, password: SHA256(signUpInfo.password) });
     console.log(signUpInfo);
+    axios
+      .post(`${process.env.BACKEND_URI}/users/add`, signUpInfo)
+      .then((res) => {
+        console.log(res);
+        try {
+          localStorage.setItem("token", res.data.token);
+        } catch (err) {
+          console.log({
+            msg: "Failed to save authentication data to local storage",
+            err
+          });
+        }
+        history.push("/authenticated");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -47,7 +65,7 @@ export default function SignUp() {
         </div>
         <div className="emailSection">
           <input
-            type="text"
+            type="email"
             className="textInput emailSectionElement"
             placeholder="Enter your email"
             value={signUpInfo.email}

@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/Home.css";
@@ -8,8 +8,19 @@ import "../assets/stylesheets/Home.css";
 import icon from "../assets/image.png";
 
 export default function Home() {
+  const history = useHistory();
+
+  /* Reference for login button */
+  const loginButtonRef = useRef();
+
+  /* For the Add Product button */
+  const addProductButtonRef = useRef();
+
   /* useState for product list */
   const [products, setProducts] = useState([]);
+
+  /* Login button state */
+  const [loginStatus, setLoginStatus] = useState("Log In");
 
   /* Template for each product card */
   const ProductCard = ({ icon, productInfo }) => (
@@ -34,7 +45,7 @@ export default function Home() {
   useEffect(() => {
     /* Fetch 40 products by default */
     axios
-      .get("https://ccch1.sse.codesandbox.io/products/40")
+      .get(`${process.env.BACKEND_URI}/products/40`)
       .then((res) => {
         console.log(res.data);
 
@@ -45,16 +56,69 @@ export default function Home() {
           console.log(err.response.data);
         }
       });
+
+    /* Check if user is already logged in */
+    var token = "";
+    token = localStorage.getItem("token");
+
+    if (token) {
+      axios
+        .get(`${process.env.BACKEND_URI}/users/user`, {
+          headers: {
+            "X-Auth-Token": token
+          }
+        })
+        .then((res) => {
+          setLoginStatus("Logout");
+          loginButtonRef.current.style.display = "block";
+
+          /* If the user is admin enable the addproduct button */
+          console.log(res.data);
+          if (res.data.email === "admin@getart") {
+            addProductButtonRef.current.style.display = "block";
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          loginButtonRef.current.style.display = "block";
+        });
+    } else {
+      loginButtonRef.current.style.display = "block";
+    }
   }, []);
+
+  function handleUserLogin() {
+    if (loginStatus === "Log In") {
+      history.push("/login");
+    } else if (loginStatus === "Logout") {
+      console.log("logging out");
+      localStorage.removeItem("token");
+    }
+  }
 
   return (
     <div className="container" style={{ maxWidth: "1000px" }}>
       <div className="headerBar">
         <div className="titleBar">
           <div className="titleText">Shopping</div>
-          <Link to={"/login"} className="loginButton">
-            Log In
-          </Link>
+          <div className="titleBarButtons">
+            <button
+              className="loginButton"
+              onClick={() => history.push("/addproduct")}
+              ref={addProductButtonRef}
+              style={{ marginRight: "1em", display: "none" }}
+            >
+              Add Product
+            </button>
+            <button
+              className="loginButton"
+              onClick={handleUserLogin}
+              ref={loginButtonRef}
+              style={{ display: "none" }}
+            >
+              {loginStatus}
+            </button>
+          </div>
         </div>
         <input
           type="text"

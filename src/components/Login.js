@@ -1,34 +1,76 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import SHA256 from "../utils/sha256";
+import { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/Login.css";
 
 export default function Login() {
+  const history = useHistory();
+
   const [loginInfo, setLoginInfo] = useState({
-    username: "",
+    email: "",
     password: ""
+  });
+
+  function checkAuthorizationStatus() {
+    /* Check if user is already logged in */
+    var token = "";
+    token = localStorage.getItem("token");
+
+    if (token) {
+      axios
+        .get(`${process.env.BACKEND_URI}/users/user`, {
+          headers: {
+            "X-Auth-Token": token
+          }
+        })
+        .then((res) => {
+          alert("You are already logged in!");
+          history.push("/authenticated");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  useEffect(() => {
+    checkAuthorizationStatus();
   });
 
   function logInToAccount(e) {
     e.preventDefault();
 
-    setLoginInfo({ ...loginInfo, password: SHA256(loginInfo.password) });
     console.log(loginInfo);
+    axios
+      .post(`${process.env.BACKEND_URI}/users/login`, loginInfo)
+      .then((res) => {
+        console.log(res);
+        try {
+          localStorage.setItem("token", res.data.token);
+        } catch (err) {
+          console.log({
+            msg: "Failed to save authentication data to local storage",
+            err
+          });
+        }
+        history.push("/authenticated");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
     <form className="container loginContent" onSubmit={logInToAccount}>
       <div className="heading">Log In</div>
       <input
-        type="text"
+        type="email"
         className="loginFields textInput"
-        placeholder="Username"
-        value={loginInfo.username}
-        onChange={(e) =>
-          setLoginInfo({ ...loginInfo, username: e.target.value })
-        }
+        placeholder="E-mail"
+        value={loginInfo.email}
+        onChange={(e) => setLoginInfo({ ...loginInfo, email: e.target.value })}
       />
       <input
         type="password"

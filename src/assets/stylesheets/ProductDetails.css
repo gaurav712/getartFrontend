@@ -21,7 +21,7 @@ svg {
   display: none;
   z-index: 1;
   position: fixed;
-  height: 100vh;
+  height: 100%;
   width: 40%;
   left: 70%;
   background: rgba(0, 0, 0, 0.5);

@@ -29,7 +29,7 @@ export default function AddProduct() {
 
     /* Save product info to the database */
     axios
-      .post("https://ccch1.sse.codesandbox.io/products/add", product)
+      .post(`${process.env.BACKEND_URI}/products/add`, product)
       .then((res) => {
         console.log(res);
         console.log(res.data);

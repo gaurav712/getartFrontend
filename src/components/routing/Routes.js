@@ -4,6 +4,7 @@ import AddProduct from "../AddProduct";
 import Login from "../Login";
 import SignUp from "../SignUp";
 import ProductDetails from "../ProductDetails";
+import Authenticated from "../Authenticated";
 
 export default function Routes() {
   return (
@@ -17,6 +18,7 @@ export default function Routes() {
         path="/product/:productId"
         component={ProductDetails}
       ></Route>
+      <Route exact path="/authenticated" component={Authenticated}></Route>
     </Switch>
   );
 }

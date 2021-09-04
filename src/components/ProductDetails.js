@@ -10,6 +10,9 @@ export default function ProductDetails() {
   var productId = useLocation().pathname.replace(/\/*.*\//, "");
   var history = useHistory();
 
+  /* useState for authorization status */
+  const [authorized, setAuthorized] = useState(false);
+
   /* useState for product details */
   const [productDetails, setProductDetails] = useState({
     title: "",
@@ -31,7 +34,7 @@ export default function ProductDetails() {
       if (!(productId === "undefined")) {
         /* Fetch product details */
         axios
-          .get(`https://ccch1.sse.codesandbox.io/products/details/${productId}`)
+          .get(`${process.env.BACKEND_URI}/products/details/${productId}`)
           .then((res) => {
             console.log(res.data);
             setProductDetails(res.data);
@@ -47,25 +50,61 @@ export default function ProductDetails() {
     }, 50);
   }
 
+  function setAuthorizationStatus() {
+    /* Check if user is already logged in */
+    var token = "";
+    token = localStorage.getItem("token");
+
+    if (token) {
+      axios
+        .get(`${process.env.BACKEND_URI}/users/user`, {
+          headers: {
+            "X-Auth-Token": token
+          }
+        })
+        .then((res) => {
+          setAuthorized(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
   useEffect(() => {
     /* If it hasn't loaded the data yet */
     if (productDetails.title === "") {
+      setAuthorizationStatus();
       fetchData();
     }
   });
 
   function toggleCartPanel() {
-    const cartPanel = cartPanelRef.current;
-    cartPanel.style.display =
-      getComputedStyle(cartPanel).getPropertyValue("display") === "none"
-        ? "block"
-        : "none";
+    if (authorized) {
+      const cartPanel = cartPanelRef.current;
+      cartPanel.style.display =
+        getComputedStyle(cartPanel).getPropertyValue("display") === "none"
+          ? "block"
+          : "none";
+    } else {
+      history.push("/login");
+      alert("You need to login first!");
+    }
+  }
+
+  function addProductToCart() {
+    if (authorized) {
+      console.log("added to cart");
+    } else {
+      history.push("/login");
+      alert("You need to login first!");
+    }
   }
 
   return (
     <div className="productArea">
       <div className="topBar">
-        <button id="homeLink" onClick={() => history.goBack()}></button>
+        <button id="homeLink" onClick={() => history.push("/")}></button>
         <label htmlFor="homeLink">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -110,10 +149,18 @@ export default function ProductDetails() {
           </div>
           <div className="productVariantsSection"></div>
           <div className="checkoutControlsSection">
-            <button className="loginButton" id="addToCartButton">
+            <button
+              className="loginButton"
+              id="addToCartButton"
+              onClick={addProductToCart}
+            >
               ADD TO CART
             </button>
-            <button className="loginButton" id="buyNowButton">
+            <button
+              className="loginButton"
+              id="buyNowButton"
+              onClick={addProductToCart}
+            >
               BUY NOW
             </button>
           </div>
