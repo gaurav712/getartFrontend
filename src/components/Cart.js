@@ -64,9 +64,6 @@ export default function () {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      history.push("/login");
-      alert("You need to login first");
     }
   }, []);
 
