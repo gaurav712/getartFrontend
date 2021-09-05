@@ -7,6 +7,8 @@ import Cart from "./Cart";
 
 import "../assets/stylesheets/ProductDetails.css";
 
+const BACKEND_URI = "https://getart-backend.herokuapp.com";
+
 export default function ProductDetails() {
   /* Set productId */
   var productId = useLocation().pathname.replace(/\/*.*\//, "");
@@ -38,7 +40,7 @@ export default function ProductDetails() {
       if (!(productId === "undefined")) {
         /* Fetch product details */
         axios
-          .get(`${process.env.BACKEND_URI}/products/details/${productId}`)
+          .get(`${BACKEND_URI}/products/details/${productId}`)
           .then((res) => {
             console.log(res.data);
             setProductDetails(res.data);
@@ -61,7 +63,7 @@ export default function ProductDetails() {
 
     if (token) {
       axios
-        .get(`${process.env.BACKEND_URI}/users/user`, {
+        .get(`${BACKEND_URI}/users/user`, {
           headers: {
             "X-Auth-Token": token
           }
@@ -109,7 +111,7 @@ export default function ProductDetails() {
         };
 
         axios
-          .post(`${process.env.BACKEND_URI}/cart/add`, cartEntry, {
+          .post(`${BACKEND_URI}/cart/add`, cartEntry, {
             headers: {
               "X-Auth-Token": token
             }

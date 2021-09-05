@@ -1,9 +1,12 @@
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import Helmet from "react-helmet";
 
 import "../assets/stylesheets/Common.css";
 import "../assets/stylesheets/Home.css";
+
+const BACKEND_URI = "https://getart-backend.herokuapp.com";
 
 export default function Home() {
   const history = useHistory();
@@ -43,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     /* Fetch 40 products by default */
     axios
-      .get(`${process.env.BACKEND_URI}/products/40`)
+      .get(`${BACKEND_URI}/products/40`)
       .then((res) => {
         setProducts(res.data);
       })
@@ -59,7 +62,7 @@ export default function Home() {
 
     if (token) {
       axios
-        .get(`${process.env.BACKEND_URI}/users/user`, {
+        .get(`${BACKEND_URI}/users/user`, {
           headers: {
             "X-Auth-Token": token
           }
@@ -94,7 +97,7 @@ export default function Home() {
 
   function searchForProducts(query) {
     axios
-      .get(`${process.env.BACKEND_URI}/products/search/${query}`)
+      .get(`${BACKEND_URI}/products/search/${query}`)
       .then((res) => {
         console.log(res.data);
         setProducts(res.data);
@@ -105,46 +108,52 @@ export default function Home() {
   }
 
   return (
-    <div className="container" style={{ maxWidth: "1000px" }}>
-      <div className="headerBar">
-        <div className="titleBar">
-          <div className="titleText">Shopping</div>
-          <div className="titleBarButtons">
-            <button
-              className="loginButton"
-              onClick={() => history.push("/addproduct")}
-              ref={addProductButtonRef}
-              style={{ marginRight: ".5em", display: "none" }}
-            >
-              Add Product
-            </button>
-            <button
-              className="loginButton"
-              onClick={handleUserLogin}
-              ref={loginButtonRef}
-              style={{ display: "none" }}
-            >
-              {loginStatus}
-            </button>
+    <>
+      <Helmet>
+        <title>Shopping</title>
+        <meta name="description" content="Shop for your daily products" />
+      </Helmet>
+      <div className="container" style={{ maxWidth: "1000px" }}>
+        <div className="headerBar">
+          <div className="titleBar">
+            <div className="titleText">Shopping</div>
+            <div className="titleBarButtons">
+              <button
+                className="loginButton"
+                onClick={() => history.push("/addproduct")}
+                ref={addProductButtonRef}
+                style={{ marginRight: ".5em", display: "none" }}
+              >
+                Add Product
+              </button>
+              <button
+                className="loginButton"
+                onClick={handleUserLogin}
+                ref={loginButtonRef}
+                style={{ display: "none" }}
+              >
+                {loginStatus}
+              </button>
+            </div>
           </div>
+          <input
+            type="text"
+            className="textInput"
+            id="searchBox"
+            placeholder="Search for products"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                searchForProducts(e.target.value);
+              }
+            }}
+          />
         </div>
-        <input
-          type="text"
-          className="textInput"
-          id="searchBox"
-          placeholder="Search for products"
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              searchForProducts(e.target.value);
-            }
-          }}
-        />
+        <div className="wrapper">
+          {products.map((product) => (
+            <ProductCard productInfo={product} />
+          ))}
+        </div>
       </div>
-      <div className="wrapper">
-        {products.map((product) => (
-          <ProductCard productInfo={product} />
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

@@ -4,6 +4,8 @@ import NumericInput from "react-numeric-input";
 
 import "../assets/stylesheets/Cart.css";
 
+const BACKEND_URI = "https://getart-backend.herokuapp.com";
+
 export default function () {
   const [productsInCart, setProductsInCart] = useState([]);
 
@@ -48,7 +50,7 @@ export default function () {
 
     if (token) {
       axios
-        .get(`${process.env.BACKEND_URI}/cart`, {
+        .get(`${BACKEND_URI}/cart`, {
           headers: {
             "X-Auth-Token": token
           }

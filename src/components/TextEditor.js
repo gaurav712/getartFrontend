@@ -1,5 +1,5 @@
 import "../assets/stylesheets/TextEditor.css";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 export default function TextEditor({ textEditorHtml, handleEditorHtmlChange }) {
