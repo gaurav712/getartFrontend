@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
+import Helmet from "react-helmet";
 
 import Cart from "./Cart";
 
@@ -129,6 +130,10 @@ export default function ProductDetails() {
 
   return (
     <>
+      <Helmet>
+        <title>{productDetails.seoTitle}</title>
+        <meta name="description" content={productDetails.seoDescription} />
+      </Helmet>
       <div className="topBar">
         <button id="homeLink" onClick={() => history.push("/")}></button>
         <label htmlFor="homeLink">

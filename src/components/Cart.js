@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import NumericInput from "react-numeric-input";
 
 import "../assets/stylesheets/Cart.css";
 
 export default function () {
-  const history = useHistory();
   const [productsInCart, setProductsInCart] = useState([]);
 
   /* Template for entries */
