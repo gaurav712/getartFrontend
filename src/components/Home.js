@@ -114,7 +114,7 @@ export default function Home() {
               className="loginButton"
               onClick={() => history.push("/addproduct")}
               ref={addProductButtonRef}
-              style={{ marginRight: "1em", display: "none" }}
+              style={{ marginRight: ".5em", display: "none" }}
             >
               Add Product
             </button>

@@ -90,3 +90,14 @@
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
+@media (max-width: 440px) {
+  .loginButton {
+    padding: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  .titleText {
+    font-size: 1.7rem;
+  }
+}
