@@ -25,7 +25,7 @@ export default function () {
           style={{
             input: {
               width: "100%",
-              maxWidth: "5rem",
+              maxWidth: "10em",
               background: "#ddd",
               height: "1.5rem",
               border: "none",
